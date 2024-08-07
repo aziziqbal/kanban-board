@@ -28,12 +28,12 @@ const validateContact = (contact: ResultContact): contact is ResultContact => {
   );
 };
 
-const fetchData = async <T>(
+const fetchData = async <T,>(
   fetchFunction: () => Promise<{ results: T[] }>,
   validateFunction: (item: T) => item is T,
   dataRef: { value: T[] },
   errorRef: { value: string | null },
-  dataType: string
+  dataType: string,
 ) => {
   try {
     const data = await fetchFunction();
@@ -45,18 +45,29 @@ const fetchData = async <T>(
           console.error(`Invalid ${dataType} data:`, item);
         }
       });
-      errorRef.value = null; 
+      errorRef.value = null;
     } else {
       throw new Error(`Invalid response format for ${dataType}`);
     }
   } catch (error: unknown) {
-    console.error(`There has been a problem with your fetch operation for ${dataType}:`, error);
+    console.error(
+      `There has been a problem with your fetch operation for ${dataType}:`,
+      error,
+    );
     errorRef.value = `Failed to fetch ${dataType}: ${(error as Error).message}`;
   }
 };
 
-const getStages = () => fetchData(fetchStages, validateStage, dataStages, errorStages, "stages");
-const getContact = () => fetchData(fetchContact, validateContact, dataContact, errorContacts, "contacts");
+const getStages = () =>
+  fetchData(fetchStages, validateStage, dataStages, errorStages, "stages");
+const getContact = () =>
+  fetchData(
+    fetchContact,
+    validateContact,
+    dataContact,
+    errorContacts,
+    "contacts",
+  );
 
 onMounted(() => {
   getStages();
@@ -83,8 +94,14 @@ const onDrop = (event: DragEvent, to: ResultStages) => {
   <div class="flex flex-row overflow-y-scroll gap-5 pt-5 pb-[100px] px-5">
     <div v-if="errorStages" class="error-message">{{ errorStages }}</div>
     <div v-if="errorContacts" class="error-message">{{ errorContacts }}</div>
-    <KanbanColumn v-for="(stage, index) in dataStages" :key="index" :stage="stage" :contacts="dataContact"
-      @drop="onDrop" @start-drag="startDrag" />
+    <KanbanColumn
+      v-for="(stage, index) in dataStages"
+      :key="index"
+      :stage="stage"
+      :contacts="dataContact"
+      @drop="onDrop"
+      @start-drag="startDrag"
+    />
   </div>
 </template>
 
