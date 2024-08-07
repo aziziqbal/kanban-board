@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 3000",
+    "dev": "concurrently \"vite --port 3000\" \"npm run api\"",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -15,6 +15,7 @@
     "api": "npm run merge-json && json-server --watch ./src/api/data/db.json --port 5000"
   },
   "dependencies": {
+    "concurrently": "^8.2.2",
     "json-server": "^0.17.4",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
