@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconGlobe from "../components/icons/IconGlobe.vue";
+import IconGlobe from "@/components/icons/IconGlobe.vue";
 </script>
 <template>
   <div
