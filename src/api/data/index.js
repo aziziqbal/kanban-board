@@ -1,7 +1,7 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { merge } from 'lodash-es';
+import { promises as fs } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { merge } from "lodash-es";
 
 // Menggunakan __dirname dalam modul ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -19,4 +19,7 @@ const stages = await import(path.resolve(__dirname, "./stages.json"), {
 const mergedData = merge({}, contact.default, stages.default);
 
 // Tulis data gabungan ke db.json
-await fs.writeFile(path.resolve(__dirname, 'db.json'), JSON.stringify(mergedData, null, 2));
+await fs.writeFile(
+  path.resolve(__dirname, "db.json"),
+  JSON.stringify(mergedData, null, 2),
+);
