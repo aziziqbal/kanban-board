@@ -19,7 +19,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ```sh
 npm install
 ```
-### Compile and Hot-Reload for Development
+### Run JSON Server
 
 ```sh
 npm run api
@@ -36,6 +36,13 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Format Prettier
+
+```sh
+npm run format
+```
+
 
 ### Lint with [ESLint](https://eslint.org/)
 

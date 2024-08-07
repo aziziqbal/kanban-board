@@ -1,0 +1,18 @@
+@import "./base.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/bg.jpg");
+  background-size: cover;
+  background-position: center center;
+}
+.title-page {
+  font-size: 20px;
+  color: black;
+  font-weight: bold;
+}

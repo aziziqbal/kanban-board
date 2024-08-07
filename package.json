@@ -11,8 +11,8 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "merge-json": "node ./src/api/index.js",
-    "api": "npm run merge-json && json-server --watch ./src/api/db.json --port 5000"
+    "merge-json": "node ./src/api/data/index.js",
+    "api": "npm run merge-json && json-server --watch ./src/api/data/db.json --port 5000"
   },
   "dependencies": {
     "json-server": "^0.17.4",
