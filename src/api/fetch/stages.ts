@@ -1,10 +1,10 @@
-import type { Stages } from "@/types/Stages";
+import type { ResultStages } from "@/types/Stages";
 
-export const fetchStages = async (): Promise<Stages[]> => {
+export const fetchStages = async (): Promise<ResultStages[]> => {
   const response = await fetch("http://localhost:5000/stages");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  const data: Stages[] = await response.json();
-  return data;
+  const data = await response.json();
+  return data.results;
 };

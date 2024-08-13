@@ -50,8 +50,8 @@ const filteredContacts = computed(() => {
     </div>
     <div class="flex flex-col gap-2 max-h-[300px] overflow-x-scroll">
       <KanbanCard
-        v-for="(item, index) in filteredContacts"
-        :key="index"
+        v-for="item in filteredContacts"
+        :key="item.id"
         :contact="item"
         @dragstart="handleDragStart"
       />

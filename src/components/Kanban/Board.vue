@@ -27,19 +27,16 @@ const validateContact = (contact: ResultContact): contact is ResultContact => {
     typeof contact.stage === "string"
   );
 };
-
-const fetchData = async <T,>(
-  fetchFunction: () => Promise<{ results: T[] }>,
-  validateFunction: (item: T) => item is T,
-  dataRef: { value: T[] },
+const getStages = async (
+  dataRef: { value: ResultStages[] },
   errorRef: { value: string | null },
   dataType: string,
 ) => {
   try {
-    const data = await fetchFunction();
-    if (data && Array.isArray(data.results)) {
-      data.results.forEach((item) => {
-        if (validateFunction(item)) {
+    const data = await fetchStages();
+    if (data && Array.isArray(data)) {
+      data.forEach((item) => {
+        if (validateStage(item)) {
           dataRef.value.push(item);
         } else {
           console.error(`Invalid ${dataType} data:`, item);
@@ -57,21 +54,36 @@ const fetchData = async <T,>(
     errorRef.value = `Failed to fetch ${dataType}: ${(error as Error).message}`;
   }
 };
-
-const getStages = () =>
-  fetchData(fetchStages, validateStage, dataStages, errorStages, "stages");
-const getContact = () =>
-  fetchData(
-    fetchContact,
-    validateContact,
-    dataContact,
-    errorContacts,
-    "contacts",
-  );
-
+const getContact = async (
+  dataRef: { value: ResultContact[] },
+  errorRef: { value: string | null },
+  dataType: string,
+) => {
+  try {
+    const data = await fetchContact();
+    if (data && Array.isArray(data)) {
+      data.forEach((item) => {
+        if (validateContact(item)) {
+          dataRef.value.push(item);
+        } else {
+          console.error(`Invalid ${dataType} data:`, item);
+        }
+      });
+      errorRef.value = null;
+    } else {
+      throw new Error(`Invalid response format for ${dataType}`);
+    }
+  } catch (error: unknown) {
+    console.error(
+      `There has been a problem with your fetch operation for ${dataType}:`,
+      error,
+    );
+    errorRef.value = `Failed to fetch ${dataType}: ${(error as Error).message}`;
+  }
+};
 onMounted(() => {
-  getStages();
-  getContact();
+  getStages(dataStages, errorStages, "stages");
+  getContact(dataContact, errorContacts, "contacts");
 });
 
 const startDrag = (event: DragEvent, item: ResultContact) => {
@@ -95,8 +107,8 @@ const onDrop = (event: DragEvent, to: ResultStages) => {
     <div v-if="errorStages" class="error-message">{{ errorStages }}</div>
     <div v-if="errorContacts" class="error-message">{{ errorContacts }}</div>
     <KanbanColumn
-      v-for="(stage, index) in dataStages"
-      :key="index"
+      v-for="stage in dataStages"
+      :key="stage.id"
       :stage="stage"
       :contacts="dataContact"
       @drop="onDrop"
