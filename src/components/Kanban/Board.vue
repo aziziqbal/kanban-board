@@ -33,7 +33,7 @@ const getStages = async (
   dataType: string,
 ) => {
   try {
-    const data = await fetchStages();
+    const data: ResultStages[] = await fetchStages();
     if (data && Array.isArray(data)) {
       data.forEach((item) => {
         if (validateStage(item)) {
@@ -60,7 +60,7 @@ const getContact = async (
   dataType: string,
 ) => {
   try {
-    const data = await fetchContact();
+    const data: ResultContact[] = await fetchContact();
     if (data && Array.isArray(data)) {
       data.forEach((item) => {
         if (validateContact(item)) {
