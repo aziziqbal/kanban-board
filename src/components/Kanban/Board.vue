@@ -35,7 +35,7 @@ const getStages = async (
   try {
     const data: ResultStages[] = await fetchStages();
     if (data && Array.isArray(data)) {
-      data.forEach((item) => {
+      data.forEach((item: ResultStages) => {
         if (validateStage(item)) {
           dataRef.value.push(item);
         } else {
@@ -62,7 +62,7 @@ const getContact = async (
   try {
     const data: ResultContact[] = await fetchContact();
     if (data && Array.isArray(data)) {
-      data.forEach((item) => {
+      data.forEach((item: ResultContact) => {
         if (validateContact(item)) {
           dataRef.value.push(item);
         } else {
