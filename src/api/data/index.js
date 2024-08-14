@@ -3,22 +3,20 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { merge } from "lodash-es";
 
-// Menggunakan __dirname dalam modul ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Impor data JSON menggunakan import assert
-const contact = await import(path.resolve(__dirname, "./contact.json"), {
-  assert: { type: "json" },
-});
-const stages = await import(path.resolve(__dirname, "./stages.json"), {
-  assert: { type: "json" },
-});
+async function loadJSON(filePath) {
+  const data = await fs.readFile(filePath, "utf-8");
+  return JSON.parse(data);
+}
 
-// Gabungkan data JSON
-const mergedData = merge({}, contact.default, stages.default);
+const contactPath = path.resolve(__dirname, "./contact.json");
+const stagesPath = path.resolve(__dirname, "./stages.json");
+const contact = await loadJSON(contactPath);
+const stages = await loadJSON(stagesPath);
+const mergedData = merge({}, contact, stages);
 
-// Tulis data gabungan ke db.json
 await fs.writeFile(
   path.resolve(__dirname, "db.json"),
   JSON.stringify(mergedData, null, 2),
